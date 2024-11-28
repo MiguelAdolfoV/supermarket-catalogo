@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Seleccionar o Registrar Proveedor</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment [(ngModel)]="segment">
+    <ion-segment-button value="select">
+      <ion-label>Seleccionar</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="add">
+      <ion-label>Agregar</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="segment === 'select'">
+    <ion-list>
+      <ion-item *ngFor="let proveedor of proveedores" (click)="selectProveedor(proveedor)">
+        <ion-label>
+          <h2>{{ proveedor.nombre }}</h2>
+          <p>{{ proveedor.direccion }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="segment === 'add'">
+    <form (ngSubmit)="addProveedor()">
+      <ion-item>
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input [(ngModel)]="newProveedor.nombre" name="nombre"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Tipo de Documento</ion-label>
+        <ion-input [(ngModel)]="newProveedor.tipo_documento" name="tipo_documento"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Número de Documento</ion-label>
+        <ion-input [(ngModel)]="newProveedor.num_documento" name="num_documento"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Dirección</ion-label>
+        <ion-input [(ngModel)]="newProveedor.direccion" name="direccion"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Teléfono</ion-label>
+        <ion-input [(ngModel)]="newProveedor.telefono" name="telefono"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input [(ngModel)]="newProveedor.email" name="email"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" type="submit">Registrar Proveedor</ion-button>
+    </form>
+  </div>
+</ion-content>

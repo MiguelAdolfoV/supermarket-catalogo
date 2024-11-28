@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro de Compras</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="registrarIngreso()">
+<!-- Proveedor -->
+<ion-item>
+  <ion-label>Proveedor</ion-label>
+  <ion-button expand="block" (click)="seleccionarProveedor()">
+    {{ proveedorSeleccionado?.nombre || 'Seleccionar Proveedor' }}
+  </ion-button>
+</ion-item>
+
+<!-- Mostrar ID del Proveedor -->
+<ion-item *ngIf="proveedorSeleccionado">
+  <ion-label>ID Proveedor</ion-label>
+  <ion-input [value]="proveedorSeleccionado.idpersona" readonly></ion-input>
+</ion-item>
+
+    <!-- Tipo de Comprobante -->
+    <ion-item>
+      <ion-label position="stacked">Tipo de Comprobante</ion-label>
+      <ion-select [(ngModel)]="ingreso.tipo_comprobante" name="tipo_comprobante">
+        <ion-select-option value="Factura">Factura</ion-select-option>
+        <ion-select-option value="Boleta">Boleta</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <!-- Serie de Comprobante -->
+    <ion-item>
+      <ion-label position="stacked">Serie de Comprobante</ion-label>
+      <ion-input [(ngModel)]="ingreso.serie_comprobante" name="serie_comprobante"></ion-input>
+    </ion-item>
+    
+    <!-- Número de Comprobante -->
+    <ion-item>
+      <ion-label position="stacked">Número de Comprobante</ion-label>
+      <ion-input [(ngModel)]="ingreso.num_comprobante" name="num_comprobante"></ion-input>
+    </ion-item>
+
+    <!-- Fecha -->
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-datetime [(ngModel)]="ingreso.fecha" name="fecha"></ion-datetime>
+    </ion-item>
+
+    <!-- Impuesto -->
+    <ion-item>
+      <ion-label position="stacked">Impuesto (%)</ion-label>
+      <ion-input
+        type="number"
+        [(ngModel)]="ingreso.impuesto"
+        name="impuesto"
+        (ionChange)="calcularTotal()"
+      ></ion-input>
+    </ion-item>
+
+    <!-- Total -->
+    <ion-item>
+      <ion-label position="stacked">Total</ion-label>
+      <ion-input
+        type="number"
+        [(ngModel)]="ingreso.total"
+        name="total"
+        readonly
+      ></ion-input>
+    </ion-item>
+
+    <!-- Detalles de Productos -->
+    <ion-button expand="block" (click)="agregarDetalle()">Agregar Producto</ion-button>
+    <ion-list>
+      <ion-item *ngFor="let detalle of detalles; let i = index">
+        <ion-label>
+          <h2>{{ detalle.nombre }}</h2>
+          <p>Precio Unitario: {{ detalle.precio }}</p>
+        </ion-label>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Cantidad</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-input
+              type="number"
+              [(ngModel)]="detalle.cantidad"
+              name="cantidad-{{ i }}"
+              placeholder="Cantidad"
+              (ionChange)="calcularTotal()"
+            ></ion-input>
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
+    </ion-list>
+
+    <!-- Botón para Registrar -->
+    <ion-button expand="block" type="submit">Registrar Ingreso</ion-button>
+  </form>
+</ion-content>

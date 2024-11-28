@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Seleccionar Producto</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Spinner mientras los datos se cargan -->
+  <ion-spinner *ngIf="loading"></ion-spinner>
+
+  <ion-segment [(ngModel)]="segment">
+    <ion-segment-button value="select">
+      <ion-label>Seleccionar</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="add">
+      <ion-label>Agregar</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+
+  <!-- Lista de productos -->
+  <div *ngIf="!loading && segment === 'select'">
+    <ion-list>
+      <ion-item *ngFor="let producto of productos" (click)="selectProducto(producto)">
+        <ion-label>
+          <h2>{{ producto.nombre }}</h2>
+          <p>Stock: {{ producto.stock }}</p>
+          <p>Precio: {{ producto.precio_venta }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- Formulario para agregar un producto -->
+  <div *ngIf="!loading && segment === 'add'">
+    <form (ngSubmit)="addProducto()">
+      <ion-item>
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input [(ngModel)]="newProducto.nombre" name="nombre"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Categoría</ion-label>
+        <ion-select [(ngModel)]="newProducto.idcategoria" name="idcategoria">
+          <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.idcategoria">
+            {{ categoria.nombre }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Código</ion-label>
+        <ion-input [(ngModel)]="newProducto.codigo" name="codigo"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Precio</ion-label>
+        <ion-input [(ngModel)]="newProducto.precio_venta" name="precio_venta" type="number"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Descripción</ion-label>
+        <ion-input [(ngModel)]="newProducto.descripcion" name="descripcion"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" type="submit">Registrar Producto</ion-button>
+    </form>
+  </div>
+</ion-content>
